@@ -1,5 +1,4 @@
 
-
 import requests
 import json
 
@@ -17,9 +16,26 @@ def emotion_detector(text_to_analyse):
     # Realizamos una solicitud POST a la API con la carga útil y los encabezados
     response = requests.post(url, json=mydata, headers=header)
 
-        # Analiza la respuesta de la API
+    # Analiza la respuesta de la API
     formatted_response = json.loads(response.text)
 
+    # obtenet el objeto de emociones
+    obj_emotion =  formatted_response['emotionPredictions'][0]['emotion']
 
-    # Devuelve el label y el score en un diccionario
-    return formatted_response
+    # Inicializacion de variable de la emocion con mas puntaje
+    emotion_score = 0
+    emotion_name = ""
+
+    # Bucle para buscar la emocion con mayor puntaje
+    for key, val in obj_emotion.items():
+
+        if val > emotion_score:
+            emotion_name = key
+            emotion_score = val
+       
+    obj_emotion['dominant_emotion'] = emotion_name
+
+    
+    return obj_emotion
+
+
