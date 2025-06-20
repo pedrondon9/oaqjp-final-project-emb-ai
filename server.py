@@ -11,22 +11,28 @@ def emo_detector() :
     # Pasa el texto a la función sentiment_analyzer y almacena la respuesta
     response = emotion_detector(text_emotion)
 
-    data_return = (
-        f"For the given statement, the system response is "
-        f"anger: {response['anger']}, "
-        f"disgust: {response['disgust']}, "
-        f"fear: {response['fear']}, "
-        f"joy: {response['joy']} and "
-        f"sadness: {response['sadness']}. "
-        f"The dominant emotion is {response['dominant_emotion']}."
-    )
-    
-    return data_return
+    if response["dominant_emotion"] == None :
+
+        return "Invalid text! Please try again!."
+
+    else :
+
+        data_return = (
+            f"For the given statement, the system response is "
+            f"anger: {response['anger']}, "
+            f"disgust: {response['disgust']}, "
+            f"fear: {response['fear']}, "
+            f"joy: {response['joy']} and "
+            f"sadness: {response['sadness']}. "
+            f"The dominant emotion is {response['dominant_emotion']}."
+        )
+        
+        return data_return
 
 @app.route("/")
 def render_index_page():
     return render_template('index.html')
-
+python3 -m pip install requests
 
 if __name__ == "__main__":
 
