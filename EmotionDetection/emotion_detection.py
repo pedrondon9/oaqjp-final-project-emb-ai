@@ -19,22 +19,35 @@ def emotion_detector(text_to_analyse):
     # Analiza la respuesta de la API
     formatted_response = json.loads(response.text)
 
-    # obtenet el objeto de emociones
-    obj_emotion =  formatted_response['emotionPredictions'][0]['emotion']
+    if response.status_code == 200:
 
-    # Inicializacion de variable de la emocion con mas puntaje
-    emotion_score = 0
-    emotion_name = ""
+        # obtenet el objeto de emociones
+        obj_emotion =  formatted_response['emotionPredictions'][0]['emotion']
 
-    # Bucle para buscar la emocion con mayor puntaje
-    for key, val in obj_emotion.items():
+        # Inicializacion de variable de la emocion con mas puntaje
+        emotion_score = 0
+        emotion_name = ""
 
-        if val > emotion_score:
-            emotion_name = key
-            emotion_score = val
-       
-    obj_emotion['dominant_emotion'] = emotion_name
+        # Bucle para buscar la emocion con mayor puntaje
+        for key, val in obj_emotion.items():
 
+            if val > emotion_score:
+                emotion_name = key
+                emotion_score = val
+        
+        obj_emotion['dominant_emotion'] = emotion_name
+
+    # Si el código de estado de la respuesta es 500, establece label y score en None
+    elif response.status_code == 400:
+
+        obj_emotion = {
+            "anger": None, 
+            "disgust": None, 
+            "fear": None, 
+            "joy": None, 
+            "sadness": None, 
+            "dominant_emotion":None
+            }
     
     return obj_emotion
 

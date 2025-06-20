@@ -1,17 +1,15 @@
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
-
 app = Flask("Emotion Detection")
 
-
 @app.route("/emotionDetector")
-def emo_detector():
-    # Recupera el texto a analizar de los argumentos de la solicitud
-    text_to_analyze = 'I love my live'
+def emo_detector() :
 
+    # Recupera el texto a analizar de los argumentos de la solicitud
+    text_emotion = request.args.get('textToAnalyze')
     # Pasa el texto a la función sentiment_analyzer y almacena la respuesta
-    response = emotion_detector(text_to_analyze)
+    response = emotion_detector(text_emotion)
 
     data_return = (
         f"For the given statement, the system response is "
@@ -24,7 +22,6 @@ def emo_detector():
     )
     
     return data_return
-
 
 @app.route("/")
 def render_index_page():
